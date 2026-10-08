@@ -1,0 +1,15 @@
+{
+  "name": "aishwarya-server",
+  "version": "1.0.0",
+  "description": "Just for example",
+  "main": "index.js",
+  "scripts": {
+    "aish": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Int Source Tech Pvt Ltd",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
