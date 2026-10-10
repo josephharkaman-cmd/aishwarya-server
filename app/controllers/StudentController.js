@@ -1,5 +1,5 @@
 const StudentModel = require("../models/StudentModel");
-
+// npm i bcryptjs jsonwebtoken
 const StudentController = {
   async create(req, res) {
     const body = req.body;

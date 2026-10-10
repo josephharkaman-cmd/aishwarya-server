@@ -2,8 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose")
 const StudentController = require("./app/controllers/StudentController");
 const TeacherController = require("./app/controllers/TeacherController");
+const { PORT } = require("./app/utils/constants.utils");
+const AuthController = require("./app/controllers/AuthController");
+const { authMiddleware } = require("./app/middleware/authMiddleware");
 
-const PORT = 5789
+// const PORT = 5789
 
 mongoose.connect("mongodb://localhost:27017/studentDB")
 
@@ -18,7 +21,7 @@ app.get("/about", (req, res) => {
 });
 
 app.post("/student", StudentController.create);
-app.get("/student", StudentController.readAll);
+app.get("/student", [authMiddleware], StudentController.readAll);
 app.get("/student/:id", StudentController.readOne);
 app.put("/student/:id", StudentController.update);
 app.delete("/student/:id", StudentController.destroy);
@@ -28,6 +31,9 @@ app.get("/teacher", TeacherController.readAll);
 app.get("/teacher/:id", TeacherController.readOne);
 app.put("/teacher/:id", TeacherController.update);
 app.delete("/teacher/:id", TeacherController.destroy);
+
+app.post("/register", AuthController.register);
+app.post("/login", AuthController.login);
 
 app.listen(PORT, function() {
     let name = "Sudarshan"
