@@ -1,5 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const cors = require("cors");
 const StudentController = require("./app/controllers/StudentController");
 const TeacherController = require("./app/controllers/TeacherController");
 const { PORT } = require("./app/utils/constants.utils");
@@ -8,20 +9,22 @@ const { authMiddleware } = require("./app/middleware/authMiddleware");
 
 // const PORT = 5789
 
-mongoose.connect("mongodb://localhost:27017/studentDB")
+mongoose.connect("mongodb://localhost:27017/studentDB");
 
-const app = express()
+const app = express();
 app.use(express.json());
+app.use(cors());
+
 app.get("/", (req, res) => {
-    res.send("Welcome To the Coding World!");
-})
+  res.send("Welcome To the Coding World!");
+});
 
 app.get("/about", (req, res) => {
-    res.send("Something about me");
+  res.send("Something about me");
 });
 
 app.post("/student", StudentController.create);
-app.get("/student", [authMiddleware], StudentController.readAll);
+app.get("/student", StudentController.readAll);
 app.get("/student/:id", StudentController.readOne);
 app.put("/student/:id", StudentController.update);
 app.delete("/student/:id", StudentController.destroy);
@@ -35,10 +38,9 @@ app.delete("/teacher/:id", TeacherController.destroy);
 app.post("/register", AuthController.register);
 app.post("/login", AuthController.login);
 
-app.listen(PORT, function() {
-    let name = "Sudarshan"
-    console.log('Hello & Welcome To College, ' + name);
-    console.log("Hello & Welcome To College, " + name);
-    console.log(`Server started at http://localhost:${PORT}`);
-    
+app.listen(PORT, function () {
+  let name = "Sudarshan";
+  console.log("Hello & Welcome To College, " + name);
+  console.log("Hello & Welcome To College, " + name);
+  console.log(`Server started at http://localhost:${PORT}`);
 });
