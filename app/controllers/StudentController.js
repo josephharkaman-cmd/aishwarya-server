@@ -28,10 +28,27 @@ const StudentController = {
 
   },
   async readAll(req, res) {
-    const students = await StudentModel.find();
+    const query = req.query;
+
+    const current = query?.current_page || 1;
+
+    let limit = 2;
+    let offset = (current - 1) * limit;
+    const students = await StudentModel.find().skip(offset).limit(limit).sort({
+      name: -1
+    });
+    const totalCount = await StudentModel.countDocuments();
+
+    const totalPages = Math.ceil( totalCount / limit);
+
     res.send({
       message: "Success! 46 records found.",
       data: students,
+      totalCount,
+      totalPages,
+      current_page: current,
+      first: offset + 1,
+      last: offset + limit <= totalCount ? offset + limit : totalCount
     });
   },
   async readOne(req, res) {
